@@ -14,6 +14,7 @@ import (
 )
 
 type Config struct {
+	IperfImg       string    `yaml:"docker-image"`
 	TestDuration   string    `yaml:"test-length"`
 	TestInterval   string    `yaml:"test-interval"`
 	ServerPort     string    `yaml:"server-port"`
@@ -86,9 +87,9 @@ func main() {
 					endpointName = endpointAddress
 				}
 				// Test the download speed to the iperf endpoint
-				iperfDownResults, err := runCmd(fmt.Sprintf("docker run -i --rm %s -P 1 -t %s -f bits "+
+				iperfDownResults, err := runCmd(fmt.Sprintf("docker run -i --rm %s -P 1 -t %s -f m "+
 					"-p %s -c %s | tail -n 3 | head -n1 | awk '{print $7}'",
-					iperfImg,
+					config.IperfImg,
 					config.TestDuration,
 					config.ServerPort,
 					endpointAddress,
@@ -99,15 +100,15 @@ func main() {
 					log.Errorln(err, iperfDownResults)
 				} else {
 					// Write the download results to the tsdb
-					log.Infof("Download results for endpoint %s -> %s bps", endpointAddress, iperfDownResults)
+					log.Infof("Download results for endpoint %s -> %s Mbps", endpointAddress, iperfDownResults)
 					timeDownNow := time.Now().Unix()
 					sendGraphite("tcp", graphiteSocket, fmt.Sprintf("%s.%s %s %d\n",
 						config.TsdbDownPrefix, endpointName, iperfDownResults, timeDownNow))
 				}
 				// Test the upload speed to the iperf endpoint
 				iperfUpResults, err := runCmd(fmt.Sprintf("docker run -i --rm %s -P 1 -R -t %s "+
-					"-f bits -p %s -c %s | tail -n 3 | head -n1 | awk '{print $7}'",
-					iperfImg,
+					"-f m  -p %s -c %s | tail -n 3 | head -n1 | awk '{print $7}'",
+					config.IperfImg,
 					config.TestDuration,
 					config.ServerPort,
 					endpointAddress,
@@ -118,7 +119,7 @@ func main() {
 					log.Errorln(err, iperfUpResults)
 				} else {
 					// Write the upload results to the tsdb
-					log.Infof("Upload results for endpoint %s -> %s bps", endpointAddress, iperfUpResults)
+					log.Infof("Upload results for endpoint %s -> %s Mbps", endpointAddress, iperfUpResults)
 					timeUpNow := time.Now().Unix()
 					sendGraphite("tcp", graphiteSocket, fmt.Sprintf("%s.%s %s %d\n",
 						config.TsdbUpPrefix, endpointName, iperfUpResults, timeUpNow))
