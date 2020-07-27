@@ -1,0 +1,11 @@
+---
+docker-image: probez/iperf3 
+test-length: 5
+test-interval: 300
+server-port: 5201
+grafana-address: 10.147.20.100
+grafana-port: 2003
+tsdb-download-prefix: bandwidth.download
+tsdb-upload-prefix: bandwidth.upload
+iperf-servers:
+  - 10.147.20.11: RS01
