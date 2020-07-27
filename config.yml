@@ -8,4 +8,5 @@ grafana-port: 2003
 tsdb-download-prefix: bandwidth.download
 tsdb-upload-prefix: bandwidth.upload
 iperf-servers:
-  - 10.147.20.11: RS01
+  - 10.147.20.11: RM01-RS01
+  - speedtest.hiper.dk: RM01-speedtest-hiper-dk
