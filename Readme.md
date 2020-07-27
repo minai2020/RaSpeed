@@ -1,5 +1,5 @@
-# Bandwidth Performance Monitoring with Iperf
-
+# Bandwidth Performance Monitoring with Iperf3 and raspberry Nodes
+## Project forked from  nerdalert/cloud-bandwidth
 ### Overview
 
 Network visibility is one of the most important assets in a network engineer's toolkit. This is a tool measuring bandwidth that can be useful for capacity planning, SLAs, troubleshooting or any other scenario that having a realtime and historical measurements of bandwidth is useful. Multiple cloud environments, coupled with data gravity driving clusters of compute at the edge is increasing the network sprawl and piling on the ever-growing challenges for network ops/architecture/engineering.
@@ -22,7 +22,10 @@ I scrapped the old architecture of this for a simpler approach. The `old` direct
 
 - Rather then using traditional RDBMS approaches, here we are using Time Series Databases (TSDB) that are designed to ingest large amounts of timestamped metrics. That is perfect for collecting all of the different metrics we are interested in as network nerds.
 
-### QuickStart Demo
+## Integration
+zerotier is used for communicating to the receiving TSDB server
+
+### Start of the receiving server
 
 Start the TSDB and Grafana:
 
