@@ -131,28 +131,17 @@ docker stop iperf-svr && docker rm iperf-svr
 For testing this out, I recommend starting some iperf servers in containers on your desktop to make troubleshooting easier. The poller is a container so there is no need to map ports if you are running your test iperf server on the same machine as where you are running the `cbandwidth` binary.
 
 ```yml
----
-# the length of the iperf test in seconds
+docker-image: probez/iperf3 
 test-length: 5
-# the time between polls, defaults to 5 minutes (300 sec)
 test-interval: 300
-# iperf server port
 server-port: 5201
-# Address of the graphite/grafana stack running in a container (docker for mac uses localhost).
-# For a setup beyond a dev environment, grafana-address will be a routable/reachable address
-# that the polling host can connect to in order to run the client/server test.
-grafana-address: localhost
+grafana-address: 10.147.20.100
 grafana-port: 2003
-# The prefix of the stored tsdb data in graphite
 tsdb-download-prefix: bandwidth.download
 tsdb-upload-prefix: bandwidth.upload
-iperf-servers: 
-  - 172.17.0.3: azure
-  - 172.17.0.4: digitalocean
-  - 172.17.0.5: some_location
-# iperf-servers are the remote iperf servers getting polled
-# the key is the address getting polled
-# The value (after the colon )is the name that will show up in grafana 
+iperf-servers:
+  - 10.147.20.11: RM01-RS01
+  - speedtest.hiper.dk: RM01-speedtest-hiper-dk
 ```
 
 Located with the binaries in the [binaries directories](./binaries) is a config.yml file. The config file either needs to be in the same directory as the binary or referenced with a flag.
