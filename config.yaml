@@ -1,0 +1,20 @@
+use-docker: y
+docker-image: probez/iperf3
+grafana-address: 192.168.10.200
+grafana-port: 2003
+tsdb-download-prefix: bandwidth.download
+tsdb-upload-prefix: bandwidth.upload
+logging-File: ds.log
+Servers:
+  - Host-ID: hiper30min
+    server-IP: speedtest.hiper.dk
+    server-port: 5201
+    testlength: 5
+    crontask: "?/1 * * * *"
+    parallel: 1
+#  - Host-ID: Other server
+#    server-IP: 132.321.34.3
+#    server-port: 5201
+#    testlength: 5
+#    crontask: sdsd
+#    parallel: 1
